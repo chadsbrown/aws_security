@@ -22,15 +22,44 @@
 
 include_recipe 'aws_security::default'
 
-credentials = Chef::EncryptedDataBagItem.load(
-  node['aws_security']['encrypted_data_bag'],
-  'aws_keys'
-)
+#credentials = Chef::EncryptedDataBagItem.load(
+#  node['aws_security']['encrypted_data_bag'],
+#  'aws_keys'
+#)
+#
+#credentials = Chef::EncryptedDataBagItem.load(
+#  node['aws_security']['encrypted_data_bag'],
+#  'aws_keys'
+#)
 
-credentials = Chef::EncryptedDataBagItem.load(
-  node['aws_security']['encrypted_data_bag'],
-  'aws_keys'
-)
+credentials = node['ec2']
+puts credentials
+
+aws_security_group 'chad-test' do
+  description 'chad-test-group'
+  region 'us-east-1'
+  aws_access_key_id credentials['aws_access_key_id']
+  aws_secret_access_key credentials['aws_secret_access_key']
+  action :create_if_missing
+end
+
+aws_security_group 'chad-test' do
+  description 'chad-test-group'
+  region 'us-east-1'
+  aws_access_key_id credentials['aws_access_key_id']
+  aws_secret_access_key credentials['aws_secret_access_key']
+  action :create_if_missing
+  vpcid 'vpc-2372e147'
+end
+
+aws_security_group 'chad-test' do
+  description 'chad-test-group'
+  region 'us-east-1'
+  aws_access_key_id credentials['aws_access_key_id']
+  aws_secret_access_key credentials['aws_secret_access_key']
+  action :create_if_missing
+  vpcid 'vpc-63148607'
+end
 
 aws_security_group 'test' do
   description 'test security group'
@@ -106,12 +135,12 @@ aws_security_group_rule 'test rule 5' do
   aws_secret_access_key credentials['aws_secret_access_key']
 end
 
-aws_security_group_rule 'test rule 5' do
-  group 'test_source_group'
-  source_group_name 'test_source_group'
-  groupname 'test'
-  region 'us-west-2'
-  ip_protocol 'tcp'
-  aws_access_key_id credentials['aws_access_key_id']
-  aws_secret_access_key credentials['aws_secret_access_key']
-end
+#aws_security_group_rule 'test rule 5' do
+#  group 'test_source_group'
+#  source_group_name 'test_source_group'
+#  groupname 'test'
+#  region 'us-west-2'
+#  ip_protocol 'tcp'
+#  aws_access_key_id credentials['aws_access_key_id']
+#  aws_secret_access_key credentials['aws_secret_access_key']
+#end
